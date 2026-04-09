@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { getCourses } from '@/lib/api';
 import { Search, Star, Filter, BookOpen, IndianRupee, Clock, GraduationCap } from 'lucide-react';
@@ -8,7 +8,7 @@ import { useSearchParams } from 'next/navigation';
 const CATEGORIES = ['All', 'Engineering', 'Management', 'Medical', 'Science', 'Law', 'Commerce', 'Design'];
 const LEVELS = ['All', 'Undergraduate', 'Postgraduate', 'Diploma', 'PhD'];
 
-export default function CoursesPage() {
+function CoursesContent() {
   const searchParams = useSearchParams();
   const [courses, setCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -133,5 +133,13 @@ export default function CoursesPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function CoursesPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen pt-24 flex items-center justify-center"><div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" /></div>}>
+      <CoursesContent />
+    </Suspense>
   );
 }
